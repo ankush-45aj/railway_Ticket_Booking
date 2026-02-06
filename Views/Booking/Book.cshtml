@@ -1,0 +1,45 @@
+@model RailwayBookingApp.Models.Booking
+
+@{
+    ViewData["Title"] = "Book Ticket";
+}
+
+<h2>Book Ticket</h2>
+
+<form asp-controller="Booking" asp-action="Book" method="post">
+    <div class="mb-3">
+        <label asp-for="PassengerName">Passenger Name</label>
+        <input asp-for="PassengerName" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TrainId">Train</label>
+        <select asp-for="TrainId" class="form-control" asp-items="ViewBag.Trains"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Seats">Seats</label>
+        <input asp-for="Seats" type="number" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Class">Class</label>
+        <select asp-for="Class" class="form-control">
+            <option value="Sleeper">Sleeper</option>
+            <option value="AC">AC</option>
+            <option value="General">General</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SeatNumbers">Seat Numbers</label>
+        <input asp-for="SeatNumbers" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price">Price</label>
+        <input asp-for="Price" type="number" step="0.01" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Book Ticket</button>
+</form>

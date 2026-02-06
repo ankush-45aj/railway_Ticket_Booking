@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>Dashboard</h2>
+    <p>Welcome, <strong>@ViewBag.UserEmail</strong>!</p>
+    <p>Logged in as: @ViewBag.UserEmail</p>
+
+    <div class="mt-3">
+        <a class="btn btn-success" href="@Url.Action("Search", "Train")">Search Trains</a>
+        <a class="btn btn-danger" href="@Url.Action("Logout", "Account")">Logout</a>
+    </div>
+   <h2>Welcome, @ViewBag.UserEmail</h2>
+<p>Your UserId: @ViewBag.UserId</p>
+</div>
+Console.WriteLine($"UserId={HttpContext.Session.GetInt32("UserId")}, Email={HttpContext.Session.GetString("User")}");

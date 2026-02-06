@@ -1,0 +1,50 @@
+@model List<RailwayBookingApp.Models.Train>
+
+<h2>Available Trains</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No trains found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Train</th>
+                <th>Route</th>
+                <th>Departure</th>
+                <th>Seats</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var train in Model)
+        {
+            <tr>
+                <td>@train.TrainName (@train.TrainNumber)</td>
+                <td>@train.Source → @train.Destination</td>
+                <td>@train.DepartureTime.ToString("dd MMM yyyy HH:mm")</td>
+                <td>@train.AvailableSeats</td>
+                <td>
+                    <form method="post" asp-controller="Booking" asp-action="Book">
+                        <input type="hidden" name="TrainId" value="@train.Id" />
+
+                        <input type="text" name="PassengerName" placeholder="Name" class="form-control mb-2" required />
+
+                        <input type="number" name="Seats" placeholder="Seats" class="form-control mb-2" required />
+
+                        <select name="Class" class="form-select mb-2" required>
+                            <option value="Sleeper">Sleeper</option>
+                            <option value="AC">AC</option>
+                            <option value="FirstClass">First Class</option>
+                        </select>
+
+                        <button class="btn btn-success w-100">Book Ticket</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

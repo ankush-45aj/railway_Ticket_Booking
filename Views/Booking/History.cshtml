@@ -1,0 +1,40 @@
+@model List<RailwayBookingApp.Models.Booking>
+
+<h2>My Booking History</h2>
+
+@if (!Model.Any())
+{
+    <p>You have not booked any tickets yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Train</th>
+                <th>Route</th>
+                <th>Departure</th>
+                <th>Passenger</th>
+                <th>Seats</th>
+                <th>Class</th>
+                <th>Seat Numbers</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.Train?.TrainName (@booking.TrainId)</td>
+                <td>@booking.Train?.Source → @booking.Train?.Destination</td>
+                <td>@booking.Train?.DepartureTime.ToString("dd MMM yyyy HH:mm")</td>
+                <td>@booking.PassengerName</td>
+                <td>@booking.Seats</td>
+                <td>@booking.Class</td>
+                <td>@booking.SeatNumbers</td>
+                <td>₹@booking.Price</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
