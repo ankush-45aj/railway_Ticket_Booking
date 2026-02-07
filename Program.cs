@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using RailwayBookingApp.Models;
+
 using RailwayBookingApp.Data;
 using RailwayBookingApp.Services;
 using RailwayBookingApp.Services.Interfaces;
@@ -26,6 +28,11 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<ITrainService, TrainService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
+builder.Services.AddScoped<EmailService>();
+
 
 var app = builder.Build();
 

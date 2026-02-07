@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RailwayBookingApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07f2101d03b96ec22a26acbf580173e6118506f1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+372a649ccb85054ce576cf5911d796f0d1d220ea")]
 [assembly: System.Reflection.AssemblyProductAttribute("RailwayBookingApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RailwayBookingApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

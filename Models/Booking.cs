@@ -12,6 +12,8 @@ namespace RailwayBookingApp.Models
 
         public string Class { get; set; } = "Sleeper";
         public string SeatNumbers { get; set; } = string.Empty;
+        public decimal TotalPrice { get; set; }
+
         public decimal Price { get; set; }
 
         // ✅ New fields for History tracking
