@@ -1,50 +1,132 @@
 @model List<RailwayBookingApp.Models.Train>
 
-<h2>Available Trains</h2>
-
-@if (Model == null || !Model.Any())
-{
-    <p>No trains found.</p>
+@{
+    ViewData["Title"] = "Available Trains";
 }
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Train</th>
-                <th>Route</th>
-                <th>Departure</th>
-                <th>Seats</th>
-                <th>Book</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var train in Model)
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    body { 
+        font-family: 'Outfit', sans-serif; 
+        background-color: #0f172a; 
+        color: #f8fafc;
+    }
+    .train-card {
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        border: 1px solid #334155;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .train-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+        transform: translateY(-4px);
+    }
+    .input-dark {
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: #f8fafc;
+    }
+    .input-dark:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+</style>
+
+<div class="min-h-screen py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-white tracking-tight">Available Trains</h1>
+                <p class="text-slate-400 mt-1">Select your preferred journey and confirm details.</p>
+            </div>
+            <a href="@Url.Action("Search", "Train")" class="text-blue-500 hover:text-blue-400 font-semibold flex items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Modify Search
+            </a>
+        </div>
+
+        @if (Model == null || !Model.Any())
         {
-            <tr>
-                <td>@train.TrainName (@train.TrainNumber)</td>
-                <td>@train.Source → @train.Destination</td>
-                <td>@train.DepartureTime.ToString("dd MMM yyyy HH:mm")</td>
-                <td>@train.AvailableSeats</td>
-                <td>
-                    <form method="post" asp-controller="Booking" asp-action="Book">
-                        <input type="hidden" name="TrainId" value="@train.Id" />
-
-                        <input type="text" name="PassengerName" placeholder="Name" class="form-control mb-2" required />
-
-                        <input type="number" name="Seats" placeholder="Seats" class="form-control mb-2" required />
-
-                        <select name="Class" class="form-select mb-2" required>
-                            <option value="Sleeper">Sleeper</option>
-                            <option value="AC">AC</option>
-                            <option value="FirstClass">First Class</option>
-                        </select>
-
-                        <button class="btn btn-success w-100">Book Ticket</button>
-                    </form>
-                </td>
-            </tr>
+            <div class="train-card rounded-3xl p-12 text-center">
+                <i class="bi bi-exclamation-triangle text-5xl text-yellow-500 mb-4 block"></i>
+                <h3 class="text-2xl font-bold">No Records Found</h3>
+                <p class="text-slate-500 mt-2">Try adjusting your route or date parameters.</p>
+            </div>
         }
-        </tbody>
-    </table>
-}
+        else
+        {
+            <div class="grid grid-cols-1 gap-6">
+                @foreach (var train in Model)
+                {
+                    <div class="train-card rounded-3xl p-6 md:p-8 flex flex-col lg:flex-row gap-8 items-center">
+                        
+                        <div class="flex-grow space-y-4 text-center lg:text-left">
+                            <div class="flex items-center justify-center lg:justify-start gap-3">
+                                <span class="bg-blue-600/20 text-blue-400 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-blue-500/20">
+                                    #@train.TrainNumber
+                                </span>
+                                <h3 class="text-2xl font-bold text-white">@train.TrainName</h3>
+                            </div>
+                            
+                            <div class="flex items-center justify-center lg:justify-start gap-6 text-slate-300">
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500 font-bold uppercase tracking-tighter">Source</p>
+                                    <p class="text-lg font-semibold">@train.Source</p>
+                                </div>
+                                <i class="bi bi-arrow-right text-blue-500 text-xl"></i>
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500 font-bold uppercase tracking-tighter">Destination</p>
+                                    <p class="text-lg font-semibold">@train.Destination</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                                <span class="flex items-center gap-2 text-sm text-slate-400">
+                                    <i class="bi bi-calendar-event text-blue-500"></i> @train.DepartureTime.ToString("dd MMM yyyy")
+                                </span>
+                                <span class="flex items-center gap-2 text-sm text-slate-400">
+                                    <i class="bi bi-clock text-blue-500"></i> @train.DepartureTime.ToString("HH:mm")
+                                </span>
+                                <span class="flex items-center gap-2 text-sm text-slate-400">
+                                    <i class="bi bi-person-check text-blue-500"></i> @train.AvailableSeats Seats left
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-96 bg-slate-900/50 p-6 rounded-2xl border border-slate-700/50">
+                            <form method="post" asp-controller="Booking" asp-action="Book" class="space-y-3">
+                                <input type="hidden" name="TrainId" value="@train.Id" />
+
+                                <div class="relative">
+                                    <i class="bi bi-person absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                                    <input type="text" name="PassengerName" placeholder="Passenger Name" 
+                                           class="input-dark w-full pl-10 pr-4 py-2 rounded-xl text-sm" required />
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="relative">
+                                        <i class="bi bi-hash absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                                        <input type="number" name="Seats" placeholder="Seats" 
+                                               class="input-dark w-full pl-10 pr-4 py-2 rounded-xl text-sm" required min="1" />
+                                    </div>
+                                    <select name="Class" class="input-dark w-full px-4 py-2 rounded-xl text-sm cursor-pointer" required>
+                                        <option value="Sleeper">Sleeper</option>
+                                        <option value="AC">AC</option>
+                                        <option value="FirstClass">First Class</option>
+                                    </select>
+                                </div>
+
+                                <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2">
+                                    Confirm Reservation <i class="bi bi-check2-circle"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

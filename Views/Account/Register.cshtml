@@ -1,16 +1,106 @@
-<h2>Register</h2>
+@{
+    ViewData["Title"] = "Register";
+}
 
-<form method="post">
-    <div class="mb-3">
-        <label>Email</label>
-        <input name="Email" class="form-control" required />
+<style>
+    body {
+        background: linear-gradient(135deg, #3d3e3f, #000000);
+        height: 100vh;
+    }
+
+    .auth-container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        color: white;
+    }
+
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: none;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        background: white;
+        color: #6a11cb;
+        transition: .3s;
+    }
+
+    .btn-auth:hover {
+        background: #6a11cb;
+        color: white;
+    }
+
+    .link-text {
+        text-align: center;
+        margin-top: 18px;
+    }
+
+    .link-text a {
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .link-text a:hover {
+        text-decoration: underline;
+    }
+
+    @@media(max-width:500px){
+        .auth-card{
+            margin:20px;
+            padding:25px;
+        }
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2>Create Account 🚀</h2>
+
+        <form asp-controller="Account" asp-action="Register" method="post">
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input name="Email" type="email" class="form-control" placeholder="Enter your email" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Password</label>
+                <input name="Password" type="password" class="form-control" placeholder="Create a password" required />
+            </div>
+
+            <button type="submit" class="btn btn-auth">Register</button>
+
+        </form>
+
+        <div class="link-text">
+            Already have an account?
+            <a asp-controller="Account" asp-action="Login">Login</a>
+        </div>
+
     </div>
-    <div class="mb-3">
-        <label>Password</label>
-        <input name="Password" type="password" class="form-control" required />
-    </div>
-
-    <button class="btn btn-success">Register</button>
-</form>
-
-<a href="/Account/Login">Already have an account? Login</a>
+</div>

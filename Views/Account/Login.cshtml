@@ -1,21 +1,118 @@
-<h2>Login</h2>
-
-<form asp-controller="Account" asp-action="Login" method="post">
-    <div class="mb-3">
-        <label>Email</label>
-        <input name="email" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Password</label>
-        <input name="password" type="password" class="form-control" required />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p class="text-danger">@ViewBag.Error</p>
+@{
+    ViewData["Title"] = "Login";
 }
 
-<a asp-controller="Account" asp-action="Register">Register</a>
+<style>
+    body {
+        background: linear-gradient(135deg, #2f353a, #0b0c0c);
+        height: 100vh;
+    }
+
+    .auth-container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 420px;
+        padding: 40px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        color: white;
+    }
+
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: none;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        background: white;
+        color: #007bff;
+        transition: .3s;
+    }
+
+    .btn-auth:hover {
+        background: #007bff;
+        color: white;
+    }
+
+    .link-text {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .link-text a {
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .link-text a:hover {
+        text-decoration: underline;
+    }
+
+    .error-text {
+        text-align: center;
+        margin-top: 10px;
+        color: #ffdede;
+        font-weight: 500;
+    }
+
+    @@media(max-width:500px){
+        .auth-card{
+            margin:20px;
+            padding:25px;
+        }
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2>Welcome Back 👋</h2>
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input name="email" type="email" class="form-control" placeholder="Enter your email" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Password</label>
+                <input name="password" type="password" class="form-control" placeholder="Enter your password" required />
+            </div>
+
+            <button type="submit" class="btn btn-auth">Login</button>
+
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <p class="error-text">@ViewBag.Error</p>
+        }
+
+        <div class="link-text">
+            Don't have an account?
+            <a asp-controller="Account" asp-action="Register">Register</a>
+        </div>
+
+    </div>
+</div>

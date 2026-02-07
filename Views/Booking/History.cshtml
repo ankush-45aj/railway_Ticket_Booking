@@ -1,40 +1,127 @@
 @model List<RailwayBookingApp.Models.Booking>
 
-<h2>My Booking History</h2>
+@{
+    ViewData["Title"] = "Booking History";
+}
 
-@if (!Model.Any())
-{
-    <p>You have not booked any tickets yet.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Train</th>
-                <th>Route</th>
-                <th>Departure</th>
-                <th>Passenger</th>
-                <th>Seats</th>
-                <th>Class</th>
-                <th>Seat Numbers</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var booking in Model)
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    body { 
+        font-family: 'Outfit', sans-serif; 
+        background-color: #0f172a; 
+        color: #f8fafc;
+    }
+    .history-card {
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        border: 1px solid #334155;
+    }
+    .status-confirmed {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .status-cancelled {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+</style>
+
+<div class="min-h-screen py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-white tracking-tight">Booking History</h1>
+                <p class="text-slate-500 mt-1">Review your past travels and active reservations.</p>
+            </div>
+            <div class="flex gap-3">
+                 <a href="@Url.Action("Dashboard", "Account")" class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all border border-slate-700">
+                    Dashboard
+                </a>
+                <a href="@Url.Action("Search", "Train")" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-blue-900/20 transition-all">
+                    New Booking
+                </a>
+            </div>
+        </div>
+
+        @if (Model == null || !Model.Any())
         {
-            <tr>
-                <td>@booking.Train?.TrainName (@booking.TrainId)</td>
-                <td>@booking.Train?.Source → @booking.Train?.Destination</td>
-                <td>@booking.Train?.DepartureTime.ToString("dd MMM yyyy HH:mm")</td>
-                <td>@booking.PassengerName</td>
-                <td>@booking.Seats</td>
-                <td>@booking.Class</td>
-                <td>@booking.SeatNumbers</td>
-                <td>₹@booking.Price</td>
-            </tr>
+            <div class="history-card rounded-3xl p-16 text-center">
+                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="bi bi-folder2-open text-3xl text-slate-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white">No active bookings</h3>
+                <p class="text-slate-500 mt-2 max-w-sm mx-auto">Your travel log is empty. Once you book a journey, it will appear here for your records.</p>
+            </div>
         }
-        </tbody>
-    </table>
-}
+        else
+        {
+            <div class="hidden md:block overflow-hidden rounded-3xl border border-slate-800 history-card">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-widest">
+                        <tr>
+                            <th class="px-6 py-5 font-bold">Ref ID</th>
+                            <th class="px-6 py-5 font-bold">Train/Route</th>
+                            <th class="px-6 py-5 font-bold">Schedule</th>
+                            <th class="px-6 py-5 font-bold">Passenger</th>
+                            <th class="px-6 py-5 font-bold">Class/Seat</th>
+                            <th class="px-6 py-5 font-bold text-right">Fare</th>
+                            <th class="px-6 py-5 font-bold text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        @foreach (var booking in Model)
+                        {
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-5 font-mono text-blue-400 text-sm">#@booking.Id</td>
+                                <td class="px-6 py-5">
+                                    <p class="font-bold text-white">@booking.Train?.TrainName</p>
+                                    <p class="text-xs text-slate-500">@booking.Train?.Source <i class="bi bi-arrow-right mx-1"></i> @booking.Train?.Destination</p>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <p class="text-sm text-slate-300">@booking.Train?.DepartureTime.ToString("dd MMM yyyy")</p>
+                                    <p class="text-xs text-slate-500">@booking.Train?.DepartureTime.ToString("HH:mm")</p>
+                                </td>
+                                <td class="px-6 py-5 text-sm font-medium text-slate-300">@booking.PassengerName</td>
+                                <td class="px-6 py-5">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">@booking.Class</span>
+                                    <p class="text-xs text-blue-500 font-bold">Seat: @booking.SeatNumbers</p>
+                                </td>
+                                <td class="px-6 py-5 text-right font-bold text-white italic">₹@booking.Price</td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter @(booking.Status == "Confirmed" ? "status-confirmed" : "status-cancelled")">
+                                        @booking.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="md:hidden space-y-4">
+                @foreach (var booking in Model)
+                {
+                    <div class="history-card rounded-2xl p-5 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-blue-400 font-mono text-xs">#@booking.Id</p>
+                                <h4 class="font-bold text-white">@booking.Train?.TrainName</h4>
+                            </div>
+                            <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase @(booking.Status == "Confirmed" ? "status-confirmed" : "status-cancelled")">
+                                @booking.Status
+                            </span>
+                        </div>
+                        <div class="flex justify-between border-t border-slate-800 pt-4 text-sm">
+                            <span class="text-slate-500">Fare Paid</span>
+                            <span class="text-white font-bold">₹@booking.Price</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -57,21 +57,18 @@ namespace RailwayBookingApp.Controllers
         }
 
         // GET: Booking/History
-        public async Task<IActionResult> History()
-        {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+       public async Task<IActionResult> History()
+{
+    var userId = HttpContext.Session.GetInt32("UserId");
+    if (userId == null) return RedirectToAction("Login", "Account");
 
-            var bookings = await _context.Bookings
-                .Where(b => b.UserId == userId)
-                .Include(b => b.Train)
-                .ToListAsync();
+    var bookings = await _context.Bookings
+        .Where(b => b.UserId == userId)
+        .Include(b => b.Train)
+        .OrderByDescending(b => b.BookingDate) // Latest bookings first
+        .ToListAsync();
 
-            return View(bookings);
-        }
+    return View(bookings);
+}
     }
 }

@@ -185,3 +185,4 @@ C:\Projects\RailwayBookingApp\obj\Debug\net10.0\refint\RailwayBookingApp.dll
 C:\Projects\RailwayBookingApp\obj\Debug\net10.0\RailwayBookingApp.pdb
 C:\Projects\RailwayBookingApp\obj\Debug\net10.0\RailwayBookingApp.genruntimeconfig.cache
 C:\Projects\RailwayBookingApp\obj\Debug\net10.0\ref\RailwayBookingApp.dll
+C:\Projects\RailwayBookingApp\obj\Debug\net10.0\RailwayBookingApp.sourcelink.json
